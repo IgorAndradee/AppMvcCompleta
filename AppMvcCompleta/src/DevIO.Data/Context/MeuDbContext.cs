@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DevIO.Data.Context
 {
-    class MeuDbContext : DbContext
+    public class MeuDbContext : DbContext
     {
         public MeuDbContext(DbContextOptions options) : base(options) { }
 
@@ -17,7 +17,10 @@ namespace DevIO.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string)))) property.Relational
+            foreach (var property in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetProperties()
+                    .Where(p => p.ClrType == typeof(string))))
+                property.SetColumnType("varchar(100)");
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MeuDbContext).Assembly);
 
