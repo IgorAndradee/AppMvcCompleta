@@ -1,5 +1,6 @@
 ﻿using AppMvcBasica.Models;
 using DevIO.Business.Interfaces;
+using DevIO.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace DevIO.Data.Repository
 {
-    class ProdutoRepository : Repository<Produto>, IProdutoRepository
+    public class ProdutoRepository : Repository<Produto>, IProdutoRepository
     {
+        public ProdutoRepository(MeuDbContext context) : base(context){}
+
         public async Task<Produto> ObterProdutoFornecedor(Guid id)
         {
             return await Db.Produtos.AsNoTracking().Include(navigationPropertyPath: f => f.Fornecedor)
